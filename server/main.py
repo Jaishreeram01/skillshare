@@ -569,12 +569,9 @@ async def read_current_user(current_user_id: str = Depends(get_current_user)):
         if level > old_level:
             await sio.emit("level_up", {"level": level}, room=current_user_id)
 
-        # PHASE 4: Update all calculated values + lastCalculated timestamp
+        # PHASE 4: Update only trust score and daily progress (NOT xp/sessions/totalHours/level)
+        # Those are now updated in real-time when sessions complete
         updates = {
-            "sessions": session_count,
-            "xp": xp,
-            "totalHours": total_hours,
-            "level": level,
             "dailyGoalProgress": daily_progress,
             "trustScore": dynamic_trust_score,
             "lastCalculated": datetime.now()  # Track when we last calculated
