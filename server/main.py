@@ -869,17 +869,24 @@ async def update_session(session_id: str, updates: dict, current_user_id: str = 
             u_snap = u_ref.get()
             if u_snap.exists:
                 u_doc = u_snap.to_dict()
-                # Large bonus to trigger level up and stats change as requested
-                new_bonus = u_doc.get("bonusXp", 0) + 500 
-                new_streak = u_doc.get("streak", 0) + 1
                 
-                # To satisfy "timing of like five hours", we increment bonusMinutes
-                new_minutes = u_doc.get("bonusMinutes", 0) + 300 # Add 5 hours bonus!
+                # Calculate XP gain (50 base + duration bonus)
+                xp_gain = 50 + (duration // 30) * 10  # 10 XP per 30 min
+                
+                # Update all user stats
+                new_xp = u_doc.get("xp", 0) + xp_gain
+                new_sessions = u_doc.get("sessions", 0) + 1
+                new_total_hours = u_doc.get("totalHours", 0.0) + (duration / 60.0)
+                
+                # Calculate new level (every 100 XP = 1 level)
+                new_level = (new_xp // 100) + 1
                 
                 u_ref.update({
-                    "bonusXp": new_bonus,
-                    "streak": new_streak,
-                    "bonusMinutes": new_minutes
+                    "xp": new_xp,
+                    "sessions": new_sessions,
+                    "totalHours": new_total_hours,
+                    "level": new_level,
+                    "bonusXp": u_doc.get("bonusXp", 0) + xp_gain
                 })
 
     # If status becomes SCHEDULED (Accepted from PENDING)
