@@ -394,7 +394,7 @@ export default function Projects() {
                                         name="description"
                                         required
                                         placeholder="What is your project about? What problem does it solve?"
-                                        className="w-full min-h-[100px] p-3 border-2 border-border rounded-lg font-sans resize-none text-foreground bg-background"
+                                        className="w-full min-h-[100px] p-3 border-2 border-border rounded-lg font-sans resize-none text-black bg-background"
                                     />
                                 </div>
 
