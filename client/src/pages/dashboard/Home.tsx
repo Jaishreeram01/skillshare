@@ -11,7 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export default function DashboardHome() {
     const [mentors, setMentors] = useState<any[]>([]);
-    const { profile: user, refreshProfile } = useAuth(); // Use AuthContext profile (which works) as user
+    const { profile: user } = useAuth(); // Use AuthContext profile (which works) as user
     const [selectedMentor, setSelectedMentor] = useState<any>(null);
     const [showMentorModal, setShowMentorModal] = useState(false);
     const [sessions, setSessions] = useState<any[]>([]);
