@@ -26,62 +26,65 @@ const Messages = lazy(() => import('./pages/dashboard/Messages'));
 function App() {
   return (
     <AuthProvider>
-      <UserProvider>
-        <SocketProvider>
-          <Router>
-            <div className="min-h-screen bg-background text-foreground font-sans antialiased">
-              <Toaster position="top-right" richColors closeButton />
-              <Routes>
-                {/* ... routes ... */}
-                <Route path="/" element={<Landing />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/onboarding" element={<OnboardingWizard />} />
+      <SocketProvider>
+        <Router>
+          <div className="min-h-screen bg-background text-foreground font-sans antialiased">
+            <Toaster position="top-right" richColors closeButton />
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Landing />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/onboarding" element={<OnboardingWizard />} />
 
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/dashboard" element={<DashboardLayout />}>
-                    <Route index element={
-                      <Suspense fallback={<DashboardSkeleton />}>
-                        <DashboardHome />
-                      </Suspense>
-                    } />
-                    <Route path="matches" element={
-                      <Suspense fallback={<DashboardSkeleton />}>
-                        <Matches />
-                      </Suspense>
-                    } />
-                    <Route path="projects" element={
-                      <Suspense fallback={<DashboardSkeleton />}>
-                        <Projects />
-                      </Suspense>
-                    } />
-                    <Route path="leaderboard" element={
-                      <Suspense fallback={<DashboardSkeleton />}>
-                        <Leaderboard />
-                      </Suspense>
-                    } />
-                    <Route path="sessions" element={
-                      <Suspense fallback={<DashboardSkeleton />}>
-                        <Sessions />
-                      </Suspense>
-                    } />
-                    <Route path="profile" element={
-                      <Suspense fallback={<DashboardSkeleton />}>
-                        <Profile />
-                      </Suspense>
-                    } />
-                    <Route path="messages" element={
-                      <Suspense fallback={<DashboardSkeleton />}>
-                        <Messages />
-                      </Suspense>
-                    } />
-                  </Route>
+              {/* Private Routes - UserProvider only needed here */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={
+                  <UserProvider>
+                    <DashboardLayout />
+                  </UserProvider>
+                }>
+                  <Route index element={
+                    <Suspense fallback={<DashboardSkeleton />}>
+                      <DashboardHome />
+                    </Suspense>
+                  } />
+                  <Route path="matches" element={
+                    <Suspense fallback={<DashboardSkeleton />}>
+                      <Matches />
+                    </Suspense>
+                  } />
+                  <Route path="projects" element={
+                    <Suspense fallback={<DashboardSkeleton />}>
+                      <Projects />
+                    </Suspense>
+                  } />
+                  <Route path="leaderboard" element={
+                    <Suspense fallback={<DashboardSkeleton />}>
+                      <Leaderboard />
+                    </Suspense>
+                  } />
+                  <Route path="sessions" element={
+                    <Suspense fallback={<DashboardSkeleton />}>
+                      <Sessions />
+                    </Suspense>
+                  } />
+                  <Route path="profile" element={
+                    <Suspense fallback={<DashboardSkeleton />}>
+                      <Profile />
+                    </Suspense>
+                  } />
+                  <Route path="messages" element={
+                    <Suspense fallback={<DashboardSkeleton />}>
+                      <Messages />
+                    </Suspense>
+                  } />
                 </Route>
-              </Routes>
-            </div>
-          </Router>
-        </SocketProvider>
-      </UserProvider>
+              </Route>
+            </Routes>
+          </div>
+        </Router>
+      </SocketProvider>
     </AuthProvider>
   );
 }
