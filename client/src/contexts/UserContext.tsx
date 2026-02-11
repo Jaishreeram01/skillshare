@@ -28,12 +28,16 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
+import { useAuth } from './AuthContext';
+
 export function UserProvider({ children }: { children: ReactNode }) {
+    const { user: authUser } = useAuth();
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     const fetchUser = async () => {
+        if (!authUser) return; // Don't fetch if not logged in
         try {
             setLoading(true);
             setError(null);
@@ -56,8 +60,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
     };
 
     useEffect(() => {
-        fetchUser();
-    }, []);
+        if (authUser) {
+            fetchUser();
+        } else {
+            setLoading(false); // Stop loading if no user
+        }
+    }, [authUser]);
 
     return (
         <UserContext.Provider value={{ user, loading, error, refreshUser, updateUser }}>
