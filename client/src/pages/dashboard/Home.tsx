@@ -86,7 +86,7 @@ export default function DashboardHome() {
             </div>
 
             {/* Sticky Notes Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-2" key={`stats-${user?.xp}-${user?.sessions}-${user?.totalHours}`}>
                 {[
                     { label: "Total XP", value: user?.xp || 0, icon: Trophy, color: "bg-yellow-200 text-black", rotate: "-rotate-2" },
                     { label: "Sessions", value: user?.sessions || 0, icon: Users, color: "bg-blue-200 text-black", rotate: "rotate-1" },
