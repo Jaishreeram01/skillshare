@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-py"
+  interface = "asyncio"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  name          String?
+  headline      String?
+  bio           String?
+  avatar        String?
+  country       String?
+  timezone      String?
+  trustScore    Float     @default(0.0)
+  xp            Int       @default(0)
+  isVerified    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  skills        Skill[]
+  sessionsAsTeacher Session[] @relation("TeacherSessions")
+  sessionsAsLearner Session[] @relation("LearnerSessions")
+  badges        UserBadge[]
+  projects      ProjectMember[]
+  matches1      Match[]   @relation("User1Matches")
+  matches2      Match[]   @relation("User2Matches")
+}
+
+model Skill {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  name        String    // e.g. "React", "Python"
+  type        SkillType // TEACH or LEARN
+  proficiency Int       @default(1) // 1-5
+  description String?   // "I want to learn..." or "I can teach..."
+  roadmap     String?   // For teaching: The blueprint
+}
+
+enum SkillType {
+  TEACH
+  LEARN
+}
+
+model Match {
+  id          String    @id @default(cuid())
+  user1Id     String
+  user2Id     String
+  user1       User      @relation("User1Matches", fields: [user1Id], references: [id])
+  user2       User      @relation("User2Matches", fields: [user2Id], references: [id])
+  score       Float     // Compatibility score (0-100)
+  status      MatchStatus @default(PENDING)
+  createdAt   DateTime  @default(now())
+}
+
+enum MatchStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model Session {
+  id          String    @id @default(cuid())
+  teacherId   String
+  learnerId   String
+  teacher     User      @relation("TeacherSessions", fields: [teacherId], references: [id])
+  learner     User      @relation("LearnerSessions", fields: [learnerId], references: [id])
+  topic       String
+  scheduledAt DateTime
+  duration    Int       // Minutes
+  meetLink    String?
+  status      SessionStatus @default(SCHEDULED)
+  notes       String?
+  rating      Float?
+  feedback    String?
+}
+
+enum SessionStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  MISSED
+}
+
+model Badge {
+  id          String    @id @default(cuid())
+  name        String
+  icon        String
+  description String
+  users       UserBadge[]
+}
+
+model UserBadge {
+  userId      String
+  badgeId     String
+  user        User      @relation(fields: [userId], references: [id])
+  badge       Badge     @relation(fields: [badgeId], references: [id])
+  awardedAt   DateTime  @default(now())
+
+  @@id([userId, badgeId])
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  repoUrl     String?
+  createdAt   DateTime  @default(now())
+  members     ProjectMember[]
+}
+
+model ProjectMember {
+  id          String    @id @default(cuid())
+  projectId   String
+  userId      String
+  role        String    // "Frontend", "Backend", "Docs"
+  project     Project   @relation(fields: [projectId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+}

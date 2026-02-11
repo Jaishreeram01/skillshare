@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 60 30% 98%;
+    /* Creamy paper */
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 255 85% 65%;
+    /* Marker Purple */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 180 70% 50%;
+    /* Highlighter Teal */
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 50 100% 70%;
+    /* Highlighter Yellow */
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222.2 84% 4.9%;
+    /* Bold borders for sketch look */
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.75rem;
+
+    --sketch-shadow: rgba(0, 0, 0, 1);
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    /* Chalkboard Dark */
+    --foreground: 210 40% 98%;
+    /* White Chalk */
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    /* Bright Blue Chalk */
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 19% 27%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 19% 27%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 217 19% 27%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 210 40% 98%;
+    /* White Chalk Border */
+    --input: 217 19% 27%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --sketch-shadow: rgba(255, 255, 255, 0.9);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    /* Sketchbook Grid Pattern - Using dynamic colors */
+    background-image:
+      linear-gradient(currentColor 0.05, transparent 1px),
+      linear-gradient(90deg, currentColor 0.05, transparent 1px);
+    background-size: 24px 24px;
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-handwritten;
+    /* Use custom font for headings */
+  }
+}
+
+@layer utilities {
+  .font-handwritten {
+    font-family: 'Architects Daughter', cursive;
+  }
+
+  /* Doodle Card Style */
+  .sketch-card {
+    @apply bg-card border-2 border-border hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-200 rounded-xl;
+    box-shadow: 4px 4px 0px 0px var(--sketch-shadow);
+  }
+
+  .sketch-card:hover {
+    box-shadow: 2px 2px 0px 0px var(--sketch-shadow);
+  }
+
+  /* Sticker Button Style */
+  .sketch-button {
+    @apply border-2 border-border active:shadow-none active:translate-y-[3px] active:translate-x-[3px] transition-all font-handwritten font-bold;
+    box-shadow: 3px 3px 0px 0px var(--sketch-shadow);
+  }
+}
+
+/* Custom Scrollbar - Themed */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/30 rounded-full border-[3px] border-transparent bg-clip-content;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/50;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+
+  .sketch-card,
+  .sketch-button {
+    box-shadow: 2px 2px 0px 0px var(--sketch-shadow);
+  }
+
+  .sketch-card:hover {
+    box-shadow: 1px 1px 0px 0px var(--sketch-shadow);
+  }
+}
