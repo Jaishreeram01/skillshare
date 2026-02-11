@@ -26,14 +26,17 @@ except Exception as e:
     logger_temp.error(f"Failed to import email service: {e}")
     email_service = None
 
-# Configure structured logging
+# Configure structured logging (console only for production compatibility)
+import os
+handlers = []
+if os.path.exists('logs'):
+    handlers.append(logging.FileHandler('logs/app.log'))
+handlers.append(logging.StreamHandler())
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('logs/app.log'),
-        logging.StreamHandler()
-    ]
+    handlers=handlers
 )
 
 logger = logging.getLogger(__name__)

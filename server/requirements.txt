@@ -8,3 +8,4 @@ passlib[bcrypt]
 python-socketio
 email-validator
 gunicorn
+sendgrid
