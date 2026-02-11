@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Calendar as CalendarIcon, Clock, Video, FileText, CheckCircle, AlertCircle, Upload, Github, X } from "lucide-react";
+import { Clock, Video, FileText, CheckCircle, AlertCircle, Upload, Github, X } from "lucide-react";
 import Calendar from "@/components/Calendar";
 import api from "@/services/api";
 import { useAuth } from "@/contexts/AuthContext";
@@ -83,9 +83,9 @@ export default function Sessions() {
     }, [sessions, activeTab]);
 
     // OPTIMIZATION: Memoize pending tasks
-    const pendingTasks = useMemo(() => {
-        return tasks.filter(t => t.status === "PENDING");
-    }, [tasks]);
+    // const pendingTasks = useMemo(() => {
+    //     return tasks.filter(t => t.status === "PENDING");
+    // }, [tasks]);
 
     return (
         <div className="space-y-8 animate-fade-in font-handwritten">

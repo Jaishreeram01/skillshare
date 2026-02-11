@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Clock, Users, Flame, Trophy, Target, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
@@ -48,18 +48,10 @@ export default function DashboardHome() {
     }, []);
 
     // OPTIMIZATION: Memoize sorted mentors to prevent re-sorting on every render
-    const sortedMentors = useMemo(() => {
-        return [...mentors].sort((a, b) => (b.match || 0) - (a.match || 0));
-    }, [mentors]);
+    // const sortedMentors = useMemo(() => {
+    //     return [...mentors].sort((a, b) => (b.match || 0) - (a.match || 0));
+    // }, [mentors]);
 
-    // OPTIMIZATION: Memoize upcoming sessions
-    const upcomingSessions = useMemo(() => {
-        const now = new Date();
-        return sessions
-            .filter(s => s.status === "SCHEDULED" && new Date(s.scheduledAt) >= now)
-            .sort((a, b) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime())
-            .slice(0, 3); // Only show next 3
-    }, [sessions]);
 
     const handleMentorClick = (mentor: any) => {
         setSelectedMentor(mentor);

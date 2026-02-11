@@ -1,4 +1,4 @@
-import { Clock, User, Video, Calendar, XCircle } from "lucide-react";
+import { Clock, Video, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
