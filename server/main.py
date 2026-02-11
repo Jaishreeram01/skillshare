@@ -1706,6 +1706,25 @@ async def join_project(project_id: str, current_user_id: str = Depends(get_curre
 
     return {"message": "Joined project successfully"}
 
+@app.post("/test/set-my-stats")
+async def test_set_stats(current_user_id: str = Depends(get_current_user)):
+    """TEST ENDPOINT: Manually set user stats to verify display is working"""
+    doc_ref = db.collection("users").document(current_user_id)
+    
+    updates = {
+        "xp": 250,
+        "sessions": 5,
+        "totalHours": 3.5,
+        "level": 3
+    }
+    
+    doc_ref.update(updates)
+    
+    return {
+        "message": "✅ Test stats set successfully! Refresh your dashboard to see changes.",
+        "stats": updates
+    }
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(socket_app, host="0.0.0.0", port=8000)
