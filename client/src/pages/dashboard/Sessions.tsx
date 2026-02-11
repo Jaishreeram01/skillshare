@@ -6,6 +6,7 @@ import { Clock, Video, FileText, CheckCircle, AlertCircle, Upload, Github, X } f
 import Calendar from "@/components/Calendar";
 import api from "@/services/api";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUser } from "@/contexts/UserContext";
 
 export default function Sessions() {
     const [searchParams] = useSearchParams();
@@ -13,6 +14,7 @@ export default function Sessions() {
     const [showTaskModal, setShowTaskModal] = useState(false);
     const [selectedTask, setSelectedTask] = useState<any>(null);
     const { user, refreshProfile } = useAuth();
+    const { refreshUser } = useUser();
     const [sessions, setSessions] = useState<any[]>([]);
     const [tasks, setTasks] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -61,7 +63,7 @@ export default function Sessions() {
         try {
             await api.put(`/sessions/${sessionId}`, { status: "COMPLETED" });
             fetchData();
-            refreshProfile(); // Refresh XP/Level in header
+            await Promise.all([refreshProfile(), refreshUser()]); // Refresh stats immediately
         } catch (error) {
             console.error("Failed to complete session", error);
         }
