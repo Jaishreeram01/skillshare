@@ -7,11 +7,11 @@ import MentorProfileModal from "@/components/MentorProfileModal";
 import Calendar from "@/components/Calendar";
 import SessionDetailsPanel from "@/components/SessionDetailsPanel";
 import api from "@/services/api";
-import { useUser } from "@/contexts/UserContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function DashboardHome() {
     const [mentors, setMentors] = useState<any[]>([]);
-    const { user } = useUser(); // Use shared user context
+    const { profile: user, refreshProfile } = useAuth(); // Use AuthContext profile (which works) as user
     const [selectedMentor, setSelectedMentor] = useState<any>(null);
     const [showMentorModal, setShowMentorModal] = useState(false);
     const [sessions, setSessions] = useState<any[]>([]);
